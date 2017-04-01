@@ -13,6 +13,7 @@ import org.springframework.beans.factory.annotation.Autowired;
 import javax.annotation.PostConstruct;
 
 import com.pasimann.app.model.StoreItem;
+import com.pasimann.app.model.SummaryItem;
 import com.pasimann.app.service.VinylStoreService;
 import com.pasimann.app.store.VinylStoreApi;
 
