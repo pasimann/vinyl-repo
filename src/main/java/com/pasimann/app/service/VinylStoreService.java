@@ -3,6 +3,7 @@ package com.pasimann.app.service;
 import java.util.List;
 
 import com.pasimann.app.model.StoreItem;
+import com.pasimann.app.model.SummaryItem;
 
 public interface VinylStoreService {
 
@@ -17,4 +18,6 @@ public interface VinylStoreService {
 
     public int countVinylItemsByArtist(String artist);
     public int countVinylDiskTotal();
+
+    public List<SummaryItem> countVinylSummaryByArtist();
 }

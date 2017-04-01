@@ -95,4 +95,38 @@ public class VinylStoreServiceImpl implements VinylStoreService {
       }
       return count;
     }
+
+    @Override
+    public List<SummaryItem> countVinylSummaryByArtist() {
+      List<SummaryItem> result = new ArrayList<>();
+
+      List<String> artists = this.getDistinctArtists();
+
+      for (String artist : artists) {
+         List<StoreItem> items = getArtistVinylItems(artist);
+         SummaryItem s = new SummaryItem(artist, items.size());
+         result.add(s);
+      }
+      return result;
+    }
+
+    private List<String> getDistinctArtists() {
+      List<String> artists = new ArrayList<>();
+      artists.add(items.get(0).getArtist());
+
+      for (StoreItem item : items) {
+        boolean found = false;
+
+        for (String artist : artists) {
+          if (artist.equals(item.getArtist())) {
+            found = true;
+            break;
+          }
+        }
+        if (!found) {
+           artists.add(item.getArtist());
+        }
+      }
+      return artists;
+    }
 }

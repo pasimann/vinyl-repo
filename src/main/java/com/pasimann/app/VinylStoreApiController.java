@@ -12,6 +12,7 @@ import org.springframework.web.bind.annotation.ResponseBody;
 import org.springframework.beans.factory.annotation.Autowired;
 
 import com.pasimann.app.model.StoreItem;
+import com.pasimann.app.model.SummaryItem;
 import com.pasimann.app.service.VinylStoreService;
 
 @Controller
@@ -51,4 +52,27 @@ public class VinylStoreApiController {
         List<StoreItem> result = service.findVinylItemsByFormat(format);
         return result;
     }
+
+    @RequestMapping(value={"/vinyl-store-count-by-artist"}, method=RequestMethod.GET)
+    public @ResponseBody int countVinylItemsByArtist(
+            @RequestParam(value="artist", required=true) String artist) {
+
+        int result = service.countVinylItemsByArtist(artist);
+        return result;
+    }
+
+    @RequestMapping(value={"/vinyl-store-count-total"}, method=RequestMethod.GET)
+    public @ResponseBody int countVinylDiskTotal() {
+
+        int result = service.countVinylDiskTotal();
+        return result;
+    }
+
+    @RequestMapping(value={"/vinyl-store-summary-by-artist"}, method=RequestMethod.GET)
+    public @ResponseBody List<SummaryItem> countVinylSummaryByArtist() {
+
+        List<SummaryItem> result = service.countVinylSummaryByArtist();
+        return result;
+    }
+
 }
