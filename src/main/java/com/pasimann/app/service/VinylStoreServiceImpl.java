@@ -103,12 +103,23 @@ public class VinylStoreServiceImpl implements VinylStoreService {
 
       List<String> artists = this.getDistinctArtists();
 
+      List<SummaryItem> result =
+          artists.stream()
+	          .map(artist -> {
+               List<StoreItem> items = getArtistVinylItems(artist);
+               return new SummaryItem(artist, items.size());
+            })
+	          .collect(Collectors.toList());
+
+      return result;
+/*
       for (String artist : artists) {
          List<StoreItem> items = getArtistVinylItems(artist);
          SummaryItem s = new SummaryItem(artist, items.size());
          result.add(s);
       }
       return result;
+*/
     }
 
     private List<String> getDistinctArtists() {
