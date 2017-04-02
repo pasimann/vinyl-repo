@@ -99,8 +99,6 @@ public class VinylStoreServiceImpl implements VinylStoreService {
 
     @Override
     public List<SummaryItem> countVinylSummaryByArtist() {
-      List<SummaryItem> result = new ArrayList<>();
-
       List<String> artists = this.getDistinctArtists();
 
       List<SummaryItem> result =
@@ -112,14 +110,6 @@ public class VinylStoreServiceImpl implements VinylStoreService {
 	          .collect(Collectors.toList());
 
       return result;
-/*
-      for (String artist : artists) {
-         List<StoreItem> items = getArtistVinylItems(artist);
-         SummaryItem s = new SummaryItem(artist, items.size());
-         result.add(s);
-      }
-      return result;
-*/
     }
 
     private List<String> getDistinctArtists() {
