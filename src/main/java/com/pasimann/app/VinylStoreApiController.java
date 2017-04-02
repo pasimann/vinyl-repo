@@ -75,4 +75,11 @@ public class VinylStoreApiController {
         return result;
     }
 
+    @RequestMapping(value={"/vinyl-store-summary-by-company"}, method=RequestMethod.GET)
+    public @ResponseBody List<SummaryItem> countVinylSummaryByCompany() {
+
+        List<SummaryItem> result = service.countVinylSummaryByCompany();
+        return result;
+    }
+
 }

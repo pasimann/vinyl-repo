@@ -20,4 +20,5 @@ public interface VinylStoreService {
     public int countVinylDiskTotal();
 
     public List<SummaryItem> countVinylSummaryByArtist();
+    public List<SummaryItem> countVinylSummaryByCompany();
 }

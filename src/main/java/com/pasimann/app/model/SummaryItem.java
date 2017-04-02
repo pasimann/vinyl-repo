@@ -2,16 +2,16 @@ package com.pasimann.app.model;
 
 public class SummaryItem {
 
-    private String artist;
+    private String name;
     private int count;
 
-    public SummaryItem(String artist, int count) {
-       this.artist = artist;
+    public SummaryItem(String name, int count) {
+       this.name = name;
        this.count = count;
     }
 
-    public String getArtist() {
-       return artist;
+    public String getName() {
+       return name;
     }
 
     public int getCount() {

@@ -4,6 +4,7 @@ import java.util.ArrayList;
 import java.util.List;
 import java.util.stream.Collectors;
 import java.util.ResourceBundle;
+import java.lang.reflect.Method;
 
 import org.slf4j.Logger;
 import org.slf4j.LoggerFactory;
@@ -99,7 +100,7 @@ public class VinylStoreServiceImpl implements VinylStoreService {
 
     @Override
     public List<SummaryItem> countVinylSummaryByArtist() {
-      List<String> artists = this.getDistinctArtists();
+      List<String> artists = this.getDistinctItemValues("getArtist");
 
       List<SummaryItem> result =
           artists.stream()
@@ -112,6 +113,41 @@ public class VinylStoreServiceImpl implements VinylStoreService {
       return result;
     }
 
+    @Override
+    public List<SummaryItem> countVinylSummaryByCompany() {
+      List<String> companies = this.getDistinctItemValues("getCompany");
+
+      List<SummaryItem> result =
+          companies.stream()
+	          .map(company -> {
+               List<StoreItem> items = findVinylItemsByCompany(company);
+               return new SummaryItem(company, items.size());
+            })
+	          .collect(Collectors.toList());
+
+      return result;
+    }
+
+    private List<String> getDistinctItemValues(String name) {
+      List<String> result = new ArrayList<>();
+      result.add(getStoreItemAttributeValue(items.get(0), name));
+
+      for (StoreItem item : items) {
+        boolean found = false;
+
+        for (String val : result) {
+          if (val.equals(getStoreItemAttributeValue(item, name))) {
+            found = true;
+            break;
+          }
+        }
+        if (!found) {
+           result.add(getStoreItemAttributeValue(item, name));
+        }
+      }
+      return result;
+    }
+/*
     private List<String> getDistinctArtists() {
       List<String> artists = new ArrayList<>();
       artists.add(items.get(0).getArtist());
@@ -130,5 +166,26 @@ public class VinylStoreServiceImpl implements VinylStoreService {
         }
       }
       return artists;
+    }
+*/
+    private String getStoreItemAttributeValue(StoreItem item, String name) {
+      Method method = null;
+      String result = null;
+
+      try {
+        method = item.getClass().getMethod(name);
+      } catch (Exception e) {
+        e.printStackTrace();
+        return null;
+      }
+
+      try {
+        result = (String) method.invoke(item);
+      } catch (Exception e) {
+        e.printStackTrace();
+        return null;
+      }
+
+      return result;
     }
 }
