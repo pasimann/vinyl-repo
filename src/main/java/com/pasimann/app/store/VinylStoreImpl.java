@@ -14,7 +14,7 @@ import org.springframework.stereotype.Service;
 import com.pasimann.app.model.StoreItem;
 import com.pasimann.app.util.StoreItemUtility;
 
-@Service
+@Service("VinylStoreFile")
 public class VinylStoreImpl implements VinylStoreApi {
    private static Logger log = LoggerFactory.getLogger(VinylStoreImpl.class);
 

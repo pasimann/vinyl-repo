@@ -18,7 +18,7 @@ import org.springframework.jdbc.core.RowMapper;
 import com.pasimann.app.model.StoreItem;
 import com.pasimann.app.util.StoreItemUtility;
 
-@Service
+@Service("VinylStoreDB")
 public class VinylStoreDbImpl implements VinylStoreApi {
     private static Logger log = LoggerFactory.getLogger(VinylStoreDbImpl.class);
 

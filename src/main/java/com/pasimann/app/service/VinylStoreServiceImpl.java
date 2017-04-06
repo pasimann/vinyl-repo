@@ -11,6 +11,7 @@ import org.slf4j.LoggerFactory;
 
 import org.springframework.stereotype.Service;
 import org.springframework.beans.factory.annotation.Autowired;
+import org.springframework.beans.factory.annotation.Qualifier;
 import javax.annotation.PostConstruct;
 
 import com.pasimann.app.model.StoreItem;
@@ -22,6 +23,7 @@ import com.pasimann.app.store.VinylStoreApi;
 public class VinylStoreServiceImpl implements VinylStoreService {
 
     @Autowired
+    @Qualifier("VinylStoreDB")
     private VinylStoreApi store;
 
     private List<StoreItem> items;
