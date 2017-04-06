@@ -1,0 +1,16 @@
+[user]
+	email = pasi.manninen@digia.com
+	name = Pasi Manninen
+
+# From:
+# https://gist.github.com/scottnonnenberg/fefa3f65fdb3715d25882f3023b31c29
+# See https://gist.github.com/pksunkara/988716
+[alias]
+  remogin = remote show origin
+	undo = reset --soft HEAD^
+	stash-all = stash save --include-untracked
+	glog = log --graph --pretty=format:'%Cred%h%Creset -%C(yellow)%d%Creset %s %Cgreen(%cr) %C(bold blue)<%an>%Creset'
+[merge]
+	ff = only
+[status]
+  showUntrackedFiles = all

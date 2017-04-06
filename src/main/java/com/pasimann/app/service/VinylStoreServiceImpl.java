@@ -23,7 +23,7 @@ import com.pasimann.app.store.VinylStoreApi;
 public class VinylStoreServiceImpl implements VinylStoreService {
 
     @Autowired
-    @Qualifier("VinylStoreDB")
+    @Qualifier("VinylStoreFile")
     private VinylStoreApi store;
 
     private List<StoreItem> items;
