@@ -95,13 +95,9 @@ public class VinylStoreServiceImpl implements VinylStoreService {
     public int countVinylDiskTotal() {
       int count = 0;
       count = items.stream()
-                .reduce(0, (sum, i) -> sum += i.getDisks(), 
+                .reduce(0, (sum, item) -> sum += item.getDisks(),
                         (sum1, sum2) -> sum1 + sum2);
-/*      
-      for (StoreItem item : items) {
-          count = count + item.getDisks();
-      }
-*/      
+
       return count;
     }
 
@@ -144,27 +140,13 @@ public class VinylStoreServiceImpl implements VinylStoreService {
           boolean found = false;
           String value = getStoreItemAttributeValue(item, name);
           found = results.stream()
-                    .anyMatch(result -> 
+                    .anyMatch(result ->
                       result.equals(value));
           if (!found) {
             results.add(value);
           }
         });
-/*
-      for (StoreItem item : items) {
-        boolean found = false;
 
-        for (String r : results) {
-          if (r.equals(getStoreItemAttributeValue(item, name))) {
-            found = true;
-            break;
-          }
-        }
-        if (!found) {
-           results.add(getStoreItemAttributeValue(item, name));
-        }
-      }
-*/      
       return results;
     }
 
