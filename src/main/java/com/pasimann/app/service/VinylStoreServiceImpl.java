@@ -94,9 +94,14 @@ public class VinylStoreServiceImpl implements VinylStoreService {
     @Override
     public int countVinylDiskTotal() {
       int count = 0;
+      count = items.stream()
+                .reduce(0, (sum, i) -> sum += i.getDisks(), 
+                        (sum1, sum2) -> sum1 + sum2);
+/*      
       for (StoreItem item : items) {
           count = count + item.getDisks();
       }
+*/      
       return count;
     }
 
@@ -131,45 +136,38 @@ public class VinylStoreServiceImpl implements VinylStoreService {
     }
 
     private List<String> getDistinctItemValues(String name) {
-      List<String> result = new ArrayList<>();
-      result.add(getStoreItemAttributeValue(items.get(0), name));
+      List<String> results = new ArrayList<>();
+      results.add(getStoreItemAttributeValue(items.get(0), name));
 
-      for (StoreItem item : items) {
-        boolean found = false;
-
-        for (String val : result) {
-          if (val.equals(getStoreItemAttributeValue(item, name))) {
-            found = true;
-            break;
+      items.stream()
+        .forEach(item -> {
+          boolean found = false;
+          String value = getStoreItemAttributeValue(item, name);
+          found = results.stream()
+                    .anyMatch(result -> 
+                      result.equals(value));
+          if (!found) {
+            results.add(value);
           }
-        }
-        if (!found) {
-           result.add(getStoreItemAttributeValue(item, name));
-        }
-      }
-      return result;
-    }
+        });
 /*
-    private List<String> getDistinctArtists() {
-      List<String> artists = new ArrayList<>();
-      artists.add(items.get(0).getArtist());
-
       for (StoreItem item : items) {
         boolean found = false;
 
-        for (String artist : artists) {
-          if (artist.equals(item.getArtist())) {
+        for (String r : results) {
+          if (r.equals(getStoreItemAttributeValue(item, name))) {
             found = true;
             break;
           }
         }
         if (!found) {
-           artists.add(item.getArtist());
+           results.add(getStoreItemAttributeValue(item, name));
         }
       }
-      return artists;
+*/      
+      return results;
     }
-*/
+
     private String getStoreItemAttributeValue(StoreItem item, String name) {
       Method method = null;
       String result = null;
