@@ -1,3 +1,7 @@
 *.class
 target/
-
+node_modules/
+.classpath
+.project 
+.settings/
+.DS_Store
