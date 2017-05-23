@@ -76,6 +76,18 @@ const json_array =
     return json_data
   })
 
+// return list of distinct artist names 
+const getDistinctArtistNames = () => {
+    let results = []
+    results.push(json_array[0].artist)
+
+    json_array.forEach(item => {
+        let found = false 
+        let artist = item[artist]
+        found = results.some(r => r.artist === artist) 
+        found ? results.push(artist) : null
+    })
+}
 
 const app = express()
 
@@ -138,6 +150,22 @@ app.get('/vinyl-store-count-by-artist/:artist', (req, res, next) => {
 
 app.get('/vinyl-store-count-total', (req, res, next) => {
   const result = json_array.length
+  res.send(result)
+})
+
+app.get('/vinyl-store-summary-by-artist', (req, res, next) => {
+  const artists = getDistinctArtistNames()
+
+  const result = artists.map(artist => {
+    const filtered = json_array.filter(item => item[artist] === artist)
+    const summary = {
+      'artist': artist, 
+      'count' : filtered.length
+    }
+
+    return Object.assign({ }, summary)
+  })
+
   res.send(result)
 })
 
