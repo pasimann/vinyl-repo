@@ -83,6 +83,7 @@ app.get('/hello', (req, res) => {
   res.send('Hello World!')
 })
 
+// Java Rest API call example; currently not needed
 app.get('/java-api-vinyl-store-search-artist/:artist', (req, res, next) => {
   const query = qs.stringify(req.params)
 
@@ -97,9 +98,46 @@ app.get('/java-api-vinyl-store-search-artist/:artist', (req, res, next) => {
   })
 })
 
-app.get('/vinyl-store-search-artist/:artist', (req, res, next) => {
+// Node JS Rest API implementation; reads from local store, text file 
+
+app.get('/vinyl-store-search-by-artist/:artist', (req, res, next) => {
   const value = req.params
   const result = json_array.filter(item => item[artist] === value)
+  res.send(result)
+})
+
+app.get('/vinyl-store-search-by-title/:title', (req, res, next) => {
+  const value = req.params
+  const result = json_array.filter(item => item[title] === value)
+  res.send(result)
+})
+
+app.get('/vinyl-store-search-by-company/:company', (req, res, next) => {
+  const value = req.params
+  const result = json_array.filter(item => item[company] === value)
+  res.send(result)
+})
+
+app.get('/vinyl-store-search-by-year/:year', (req, res, next) => {
+  const value = req.params
+  const result = json_array.filter(item => item[year] === value)
+  res.send(result)
+})
+
+app.get('/vinyl-store-search-by-format/:format', (req, res, next) => {
+  const value = req.params
+  const result = json_array.filter(item => item[format] === value)
+  res.send(result)
+})
+
+app.get('/vinyl-store-count-by-artist/:artist', (req, res, next) => {
+  const value = req.params
+  const result = json_array.filter(item => item[artist] === value)
+  res.send(result.length)
+})
+
+app.get('/vinyl-store-count-total', (req, res, next) => {
+  const result = json_array.length
   res.send(result)
 })
 
