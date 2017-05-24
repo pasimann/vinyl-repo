@@ -78,7 +78,7 @@ const json_array =
   })
 
 // return list of distinct values of given key
-const getDistinctValues = (key) => {
+const getDistinctValues = key => {
     let results = []
     const first = json_array[0]
     results.push(first[key])
@@ -156,6 +156,11 @@ app.get('/vinyl-store-count-by-artist/:artist', (req, res, next) => {
 app.get('/vinyl-store-count-total', (req, res, next) => {
   const result = json_array.length
   res.json({ "total-count": result })
+})
+
+app.get('/vinyl-store-count-disks-total', (req, res, next) => {
+  const result = json_array.reduce((curr, next) => curr + next.disks, 0)
+  res.json({ "total-disks": result })
 })
 
 app.get('/vinyl-store-summary-by-artist', (req, res, next) => {
