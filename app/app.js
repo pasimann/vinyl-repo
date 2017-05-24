@@ -76,17 +76,21 @@ const json_array =
     return json_data
   })
 
-// return list of distinct artist names 
-const getDistinctArtistNames = () => {
+// return list of distinct values of given key
+const getDistinctValues = (key) => {
     let results = []
-    results.push(json_array[0].artist)
+    const first = json_array[0]
+    results.push(first[key])
 
     json_array.forEach(item => {
         let found = false 
-        let artist = item[artist]
-        found = results.some(r => r.artist === artist) 
-        found ? results.push(artist) : null
+        const value = item[key]
+        found = results.some(result => result === value)
+        found === false 
+          ? results.push(value) 
+          : null
     })
+    return results
 }
 
 const app = express()
@@ -154,13 +158,29 @@ app.get('/vinyl-store-count-total', (req, res, next) => {
 })
 
 app.get('/vinyl-store-summary-by-artist', (req, res, next) => {
-  const artists = getDistinctArtistNames()
+  const artists = getDistinctValues('artist')
 
   const result = artists.map(artist => {
     const filtered = json_array.filter(item => item[artist] === artist)
     const summary = {
-      'artist': artist, 
+      'artist': artist,
       'count' : filtered.length
+    }
+
+    return Object.assign({ }, summary)
+  })
+
+  res.send(result)
+})
+
+app.get('/vinyl-store-summary-by-company', (req, res, next) => {
+  const companies = getDistinctValues('company')
+
+  const result = companies.map(company => {
+    const filtered = json_array.filter(item => item[company] === company)
+    const summary = {
+      'company': company,
+      'count'  : filtered.length
     }
 
     return Object.assign({ }, summary)
