@@ -5,7 +5,8 @@ const fs      = require('fs')
 
 const BASE_URL  = 'http://localhost:8080'
 const NODE_PORT = 3000
-const DATA_FILE = '/Users/pasimann/Documents/Code/vinyl_db/vinyl_database.txt'
+const DATA_FILE = '/home/vagrant/pasimann/vinyl-repo/app/vinyl_database.txt'
+const FILE_SEPARATOR = ';'
 
 const file_data = fs.readFileSync(DATA_FILE).toString().split("\n")
 
@@ -60,18 +61,18 @@ const format_check = value => {
 const json_array = 
   file_data.map(row => {
     let json_data = {}
-    const row_array = row.split("\t")
+    const row_array = row.split(FILE_SEPARATOR) // or "\t" for tab separated columns 
 
-    json_data[artist]  = row_array[0]
-    json_data[title]   = row_array[1]
-    json_data[company] = row_array[2]
-    json_data[year]    = row_array[3]
-    json_data[format]  = row_array[4]
-    json_data[heavyweight] = row_array[5] === 'Y' ? true : false 
-    json_data[picture]     = row_array[6] === 'Y' ? true : false
-    json_data[gatefold]    = row_array[7] === 'Y' ? true : false
-    json_data[used]        = row_array[8] === 'Y' ? true : false
-    json_data[disks]       = format_check(row_array[4]) 
+    json_data['artist']  = row_array[0]
+    json_data['title']   = row_array[1]
+    json_data['company'] = row_array[2]
+    json_data['year']    = row_array[3]
+    json_data['format']  = row_array[4]
+    json_data['heavyweight'] = row_array[5] === 'Y' ? true : false 
+    json_data['picture']     = row_array[6] === 'Y' ? true : false
+    json_data['gatefold']    = row_array[7] === 'Y' ? true : false
+    json_data['used']        = row_array[8] === 'Y' ? true : false
+    json_data['disks']       = format_check(row_array[4]) 
     
     return json_data
   })
@@ -117,51 +118,51 @@ app.get('/java-api-vinyl-store-search-artist/:artist', (req, res, next) => {
 // Node JS Rest API implementation; reads from local store, text file 
 
 app.get('/vinyl-store-search-by-artist/:artist', (req, res, next) => {
-  const value = req.params
-  const result = json_array.filter(item => item[artist] === value)
-  res.send(result)
+  const value = req.params['artist']
+  const result = json_array.filter(item => item['artist'] === value)
+  res.json(result)
 })
 
 app.get('/vinyl-store-search-by-title/:title', (req, res, next) => {
-  const value = req.params
-  const result = json_array.filter(item => item[title] === value)
-  res.send(result)
+  const value = req.params['title']
+  const result = json_array.filter(item => item['title'] === value)
+  res.json(result)
 })
 
 app.get('/vinyl-store-search-by-company/:company', (req, res, next) => {
-  const value = req.params
-  const result = json_array.filter(item => item[company] === value)
-  res.send(result)
+  const value = req.params['company']
+  const result = json_array.filter(item => item['company'] === value)
+  res.json(result)
 })
 
 app.get('/vinyl-store-search-by-year/:year', (req, res, next) => {
-  const value = req.params
-  const result = json_array.filter(item => item[year] === value)
-  res.send(result)
+  const value = req.params['year']
+  const result = json_array.filter(item => item['year'] === value)
+  res.json(result)
 })
 
 app.get('/vinyl-store-search-by-format/:format', (req, res, next) => {
-  const value = req.params
-  const result = json_array.filter(item => item[format] === value)
-  res.send(result)
+  const value = req.params['format']
+  const result = json_array.filter(item => item['format'] === value)
+  res.json(result)
 })
 
 app.get('/vinyl-store-count-by-artist/:artist', (req, res, next) => {
-  const value = req.params
-  const result = json_array.filter(item => item[artist] === value)
-  res.send(result.length)
+  const value = req.params['artist']
+  const result = json_array.filter(item => item['artist'] === value)
+  res.json({ "artist-count": result.length })
 })
 
 app.get('/vinyl-store-count-total', (req, res, next) => {
   const result = json_array.length
-  res.send(result)
+  res.json({ "total-count": result })
 })
 
 app.get('/vinyl-store-summary-by-artist', (req, res, next) => {
   const artists = getDistinctValues('artist')
 
   const result = artists.map(artist => {
-    const filtered = json_array.filter(item => item[artist] === artist)
+    const filtered = json_array.filter(item => item['artist'] === artist)
     const summary = {
       'artist': artist,
       'count' : filtered.length
@@ -170,14 +171,14 @@ app.get('/vinyl-store-summary-by-artist', (req, res, next) => {
     return Object.assign({ }, summary)
   })
 
-  res.send(result)
+  res.json(result)
 })
 
 app.get('/vinyl-store-summary-by-company', (req, res, next) => {
   const companies = getDistinctValues('company')
 
   const result = companies.map(company => {
-    const filtered = json_array.filter(item => item[company] === company)
+    const filtered = json_array.filter(item => item['company'] === company)
     const summary = {
       'company': company,
       'count'  : filtered.length
@@ -186,7 +187,7 @@ app.get('/vinyl-store-summary-by-company', (req, res, next) => {
     return Object.assign({ }, summary)
   })
 
-  res.send(result)
+  res.json(result)
 })
 
 app.listen(NODE_PORT, () => {
